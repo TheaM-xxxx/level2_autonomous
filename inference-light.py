@@ -4,6 +4,8 @@ import time
 from torch.cuda.amp import autocast
 from tqdm import tqdm
 import numpy as np
+import cv2
+import matplotlib.pyplot as plt
 
 from network import *
 from datasets import build_dataloader
@@ -74,9 +76,20 @@ def pruning(net):
 
     return cfg,cfg_mask
 
+def apply_colors_to_mask(mask):
+    category_to_color = {
+        1: (255, 0, 0),  # red
+        2: (0, 255, 0),  # green
+    }
 
+    color_mask = np.zeros((mask.shape[0], mask.shape[1], 3), dtype=np.uint8)
 
-def inference(net, test_dataloader,args):
+    for category, color in category_to_color.items():
+        color_mask[mask == category] = color
+
+    return color_mask
+
+def inference(net, test_dataloader,args,vis=False):
 
     print(f"Start testing....")
 
@@ -108,6 +121,24 @@ def inference(net, test_dataloader,args):
         dice_score += dice
         iou = multiclass_iou_coeff(pred_mask_onehot[:, 1:], gt_mask_onehot[:, 1:])
         iou_score += iou
+
+        # -----------------visualization----------------
+        if vis:
+            mask = pred_mask.argmax(dim=1).cpu().data.numpy()[0, :, :]
+            # mask = gt_mask.cpu().data.numpy()[0, 0, :, :]
+
+            colored_mask = apply_colors_to_mask(mask)
+
+            plt.figure()
+            plt.axis('off')
+            plt.xticks([])
+            plt.yticks([])
+            plt.imshow(image.cpu().data.numpy()[0, 0, :, :], cmap='gray')
+            plt.imshow(colored_mask, alpha=.5)
+            plt.show()
+            # plt.savefig(os.path.join(args.output_dir, args.dataset, "masks/{}.png".format(img_name[0].split(".")[0])),
+            #             bbox_inches='tight', pad_inches=0)
+            plt.close()
 
 
     ave_dice = dice_score / len(test_dataloader)
@@ -179,7 +210,7 @@ if __name__ == '__main__':
     print("Loading", checkpoint_path)
     net.load_state_dict(torch.load(checkpoint_path),strict=False)
 
-    inference(net, data_loader_test,args)
+    inference(net, data_loader_test,args,vis=False)
     # measure_inference_time(net, data_loader_test, num_warmup_runs=20, num_runs=5)
 
     #####################
@@ -266,5 +297,5 @@ if __name__ == '__main__':
 
         print('after pruning: ', end=' ')
 
-        inference(newmodel, data_loader_test, args)
+        inference(newmodel, data_loader_test, args,vis=True)
         # measure_inference_time(newmodel, data_loader_test, num_warmup_runs=20, num_runs=5)
