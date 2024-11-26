@@ -21,7 +21,7 @@ pip install -r requirements.txt
 ```
 
 ## Running the tests
-Please follow the steps below to perform test each part of the autonomous surgical system.
+Please follow the steps below to test each part of the autonomous surgical system.
 
 ### 1. Overview of repo layout
 This is an overview of the initial repo layout. The CS3P algorithm and the DPAC strategy is integrated in the auto-control interface, 
@@ -49,6 +49,14 @@ For the testing of the designed CS3P algorithm and DPAC strategy, run the script
 ```Shell
 python main.py 
 ```
+The auto-control interface mainly comprises four sub-windows (indicated by yellow dashed lines), including the camera view (1), the intracavity view (2), the 3D view (3), and the delivery force curve (4), respectively. The top right corner outlined in pink displays the current status of the instrument, which is predicted by the proposed MSF-RNN. The status is shown in three different colors, including normal delivery (green), entering the branch (yellow), and obstruction (red).
+
+![image](https://github.com/TheaM-xxxx/level2_autonomous/blob/develop/interface.jpg)
+
+Follow the steps below to operate the interface:
+1. Click the button ①, named 'Map_load', and the system will load the provided example data.
+2. Click the button ②, named 'Blind_1cm', so the system will simulate the status of the instrument after a delivery distance of 1 cm.
+3. Button ② can be repeatedly clicked to show the whole moving process of the instrument from the common iliac artery to the coronary artery.
 
 
 ### 3. Test of the Fast-UCTransNet
