@@ -4,6 +4,8 @@ This repository is the official implementation of the methods proposed in the pa
 
 ![image](https://github.com/TheaM-xxxx/level2_autonomous/blob/master/1.jpg)
 
+We proposed a Level 2 autonomous surgical robotic system that can conduct most of the routine tasks in a standardized coronary intervention.
+
 ## Getting Started
 
 First clone the repo and cd into the directory
