@@ -1,51 +1,72 @@
 # -*- coding: utf-8 -*-
 # @Author   : Linsen Zhang
-
 import math
 import copy
+
 import sys
 import threading
 from threading import Lock
 import time
-import array
-import random
-import cv2
-import os, psutil
+
+import QT_UI
 import pyautogui
-import numpy as np
 
 from PyQt5.QtChart import QDateTimeAxis,QValueAxis,QSplineSeries,QChart,QChartView
+
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
+import json
+
+import socket
+from socket import SHUT_RDWR
+import struct
+
+import cv2
+import os, psutil
+from skimage import morphology, draw
+
+import numpy as np
+from scipy.optimize import leastsq
+
 from PyQt5.QtOpenGL import QGLWidget
 import vtk
 from vtkmodules.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
 import vtkmodules.vtkFiltersModeling
 # import vmtk
-import open3d as o3d
-from vtk.util import numpy_support
-import pyqtgraph as pg
 
-import json
-import socket
-from socket import SHUT_RDWR
-import struct
-from skimage import morphology, draw
-from scipy.optimize import leastsq
+import open3d as o3d
+
 import operator
 import datetime
+
 from memory_profiler import profile
 
+import AstarSearch as a
+import AStar_2D as a_2d
 # import AstarSearch_mp as a
-import inspect
-import ctypes
+
 import skeletor as sk
 import trimesh
 import multiprocessing
 from multiprocessing import Process, Manager
+
 from stl import mesh
+
+import WM_COPYDATA
+
+import inspect
+import ctypes
+
+import socket2robot
+
+from vtk.util import numpy_support
+
+import pyqtgraph as pg
+
+import array
+import random
 
 mapDraw_flag = False
 global_polydata = 0
@@ -62,22 +83,17 @@ import openpyxl
 import keyboard
 import re
 
+import torque_period
+
 from scipy.interpolate import interp1d
 from scipy.spatial.distance import euclidean
 from scipy.spatial.distance import cdist
-
-import CS3P_and_DPAC_codes.QT_UI as QT_UI
-import CS3P_and_DPAC_codes.AstarSearch as a
-import CS3P_and_DPAC_codes.AStar_2D as a_2d
-import CS3P_and_DPAC_codes.WM_COPYDATA as WM_COPYDATA
-import CS3P_and_DPAC_codes.socket2robot as socket2robot
-import CS3P_and_DPAC_codes.torque_period as torque_period
-
 
 # model_path = "13_.STL"
 
 # model_path = "vein_rot.STL"
 
+# 动物
 model_path = "Model-data/238_smooth.stl"
 
 
@@ -528,8 +544,9 @@ class MainWin(QtWidgets.QMainWindow):
 
         self.cam_point = []
 
+        # 目标位置 target_dis
         self.target_dis = 550
-
+        # 力矩检测标志位
         self.torque_flag = 0
         self.list_torque = []
         self.torque_plot = 0
@@ -603,6 +620,8 @@ class MainWin(QtWidgets.QMainWindow):
         self.current_light = 0
         self.current_camera_pos = [0, 0, 0]
         self.current_camera_focus = [0, 0, 0]
+
+        self.rot_dir = 0
 
     def closeEvent(self, event):
         # Window exit handlers
@@ -2720,7 +2739,7 @@ class vtkTimerCallback():
                     main.ren.RemoveActor(main.blindpoint_actor_list[i])
             main.blindpoint_display(main.process_data[8])
             # ui.pushButton_8.setEnabled(False)
-            # ui.pushButton_8.setText("Refreshed")
+            # ui.pushButton_8.setText("已刷新")
 
         if main.process_data[4] == 0 and main.process_data[5] == 0 and main.flag_Blind_Switch == 1:
             ui.pushButton_12.setStyleSheet("background-color: rgb(0,255,0)")
@@ -2802,22 +2821,42 @@ class vtkTimerCallback():
             main.NN_input_save.append(temp_NN_input)  # Historical data saved
 
         torque_data.write(main.NN_input)  # Access to torque_data
-        # main.force_state = NN_predict(torque_data.read(), model)  # Input time window data into the model
+        main.force_state = NN_predict(torque_data.read(), model)  # Input time window data into the model
 
-        if tor > 900 or (dis > 515 and dis < 525):
-            main.force_state = 2
+        if main.force_state == 2:
+
             main.force_2D_actor.SetInput("lesion crossing")
             main.force_2D_actor.SetDisplayPosition(512, 512)  # Position
             main.force_2D_actor.GetTextProperty().SetColor(1, 0, 0)  # Color
             main.ren.AddActor(main.force_2D_actor)
             main.torque_delay = 3
             print("dis:",dis)
-        elif tor > 600 or (dis > 495 and dis < 505):
-            main.force_state = 1
+            main.rot_dir = main.rot_dir + 1
+            if main.rot_dir % 10 < 5:
+                socket2robot.sendTargetModeOfOperation_WithFrameIdAndTime(0x02, 'PVM')
+                socket2robot.sendTargetVelocity_WithFrameIdAndTime(0x02, 200)
+
+            else:
+                socket2robot.sendTargetModeOfOperation_WithFrameIdAndTime(0x02, 'PVM')
+                socket2robot.sendTargetVelocity_WithFrameIdAndTime(0x02, -200)
+
+
+        elif main.force_state == 1:
+
             main.force_2D_actor.SetInput("branch entering")
             main.force_2D_actor.GetTextProperty().SetColor(1, 1, 0)  # Color
             main.ren.AddActor(main.force_2D_actor)
             main.torque_delay = 1
+            main.rot_dir = main.rot_dir + 1
+            if main.rot_dir < 10 and main.rot_dir >= 0:
+                socket2robot.sendTargetModeOfOperation_WithFrameIdAndTime(0x02, 'PVM')
+                socket2robot.sendTargetVelocity_WithFrameIdAndTime(0x02, -200)
+            else:
+                socket2robot.sendTargetModeOfOperation_WithFrameIdAndTime(0x02, 'PVM')
+                socket2robot.sendTargetVelocity_WithFrameIdAndTime(0x02, 200)
+            # print("进分支开始旋转")
+
+
         else:
             main.force_state = 0
 
@@ -2968,7 +3007,7 @@ def json_load():
 
 def Blind_init(inc):
     if main.flag_Blind_Switch == 0:
-
+        # 盲定位开启
         main.flag_Blind_Switch = 1
         main.blind_timer = threading.Timer(inc, scheduler_Blind, (inc,))  # Enable timer Cycle execution scheduler_Blind
         main.blind_timer.start()
@@ -3252,7 +3291,7 @@ def action_deal(btn):
         else:
 
             pass
-        print("Planning Time:", (currentt - startt).total_seconds(), 's')  # Print Runtime
+        print("规划总用时:", (currentt - startt).total_seconds(), 's')  # Print Runtime
     elif btn == ui.pushButton_11:  # 【TorqueInit】 Force sensing correction
         if main.torqueinit_flag == 0:
 
