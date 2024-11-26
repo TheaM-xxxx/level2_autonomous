@@ -9,12 +9,12 @@ from tqdm import tqdm
 import numpy as np
 import cv2
 import matplotlib.pyplot as plt
-
-from network import *
-from datasets import build_dataloader
 import torch.nn.functional as F
-from metrics import multiclass_dice_coeff, multiclass_iou_coeff
-from UCTransNet.CTrans_light import channel_selection
+
+from Fast_UCTransNet_codes.network import *
+from Fast_UCTransNet_codes.datasets import build_dataloader
+from Fast_UCTransNet_codes.metrics import multiclass_dice_coeff, multiclass_iou_coeff
+from Fast_UCTransNet_codes.UCTransNet.CTrans_light import channel_selection
 
 
 
@@ -130,14 +130,14 @@ def inference(net, test_dataloader,args,vis=False):
             mask = pred_mask.argmax(dim=1).cpu().data.numpy()[0, :, :]
             # mask = gt_mask.cpu().data.numpy()[0, 0, :, :]
 
-            colored_mask = apply_colors_to_mask(mask)
+            mask = apply_colors_to_mask(mask) # Comment this out when verifying the guidewire
 
             plt.figure()
             plt.axis('off')
             plt.xticks([])
             plt.yticks([])
             plt.imshow(image.cpu().data.numpy()[0, 0, :, :], cmap='gray')
-            plt.imshow(colored_mask, alpha=.5)
+            plt.imshow(mask, alpha=.5)
             plt.show()
             # plt.savefig(os.path.join(args.output_dir, args.dataset, "masks/{}.png".format(img_name[0].split(".")[0])),
             #             bbox_inches='tight', pad_inches=0)
@@ -301,8 +301,5 @@ if __name__ == '__main__':
         print('after pruning: ', end=' ')
 
         inference(newmodel, data_loader_test, args,vis=True)
-<<<<<<< HEAD
+
         # measure_inference_time(newmodel, data_loader_test, num_warmup_runs=20, num_runs=5)
-=======
-        # measure_inference_time(newmodel, data_loader_test, num_warmup_runs=20, num_runs=5)
->>>>>>> c287f7f1f7b3da04f000b28a70c84f69ae261f58

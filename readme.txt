@@ -1,0 +1,1 @@
+After reinstalling the relevant dependencies described in the `2024environment.yml` file, run the `main.py` file to start the system and open the user interface.

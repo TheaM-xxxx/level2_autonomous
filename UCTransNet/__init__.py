@@ -1,1 +1,0 @@
-from .UCTransNet import UCTransNet
