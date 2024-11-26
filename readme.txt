@@ -1,1 +1,105 @@
-After reinstalling the relevant dependencies described in the `2024environment.yml` file, run the `main.py` file to start the system and open the user interface.
+# A Level 2 Autonomous Surgical Robotic System for Coronary Interventional Surgery
+
+This repository is the official implementation of the methods proposed in the paper: A Level 2 Autonomous Surgical Robotic System for Coronary Interventional Surgery.
+
+![image](https://github.com/TheaM-xxxx/level2_autonomous/blob/master/1.jpg)
+
+## Getting Started
+
+Download the environment setting file before running the codes.
+```
+pip install -r requirement.txt
+```
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+
+### Prerequisites
+
+What things you need to install the software and how to install them
+
+```
+Give examples
+```
+
+### Installing
+
+A step by step series of examples that tell you how to get a development env running
+
+Say what the step will be
+
+```
+Give the example
+```
+
+And repeat
+
+```
+until finished
+```
+
+End with an example of getting some data out of the system or using it for a little demo
+
+## Running the tests
+For the testing of the designed CS3P algorithm and DPAC strategy, run the script:
+```Shell
+python main.py 
+```
+
+For the testing of the proposed Fast-UCTransNet, we provided 5 images for animal vessels and guidewires, separately. The script is slightly different when facing different datasets:
+Animal vessel:
+```Shell
+python inference-light.py --dataset animal --classes 3
+```
+Guidewire:
+```Shell
+python inference-light.py --dataset guidewire --classes 2
+```
+
+### Break down into end to end tests
+
+Explain what these tests test and why
+
+```
+Give an example
+```
+
+### And coding style tests
+
+Explain what these tests test and why
+
+```
+Give an example
+```
+
+## Deployment
+
+Add additional notes about how to deploy this on a live system
+
+## Built With
+
+* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
+* [Maven](https://maven.apache.org/) - Dependency Management
+* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+
+## Contributing
+
+Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+
+## Versioning
+
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+
+## Authors
+
+* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+
+See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+
+## Acknowledgments
+
+* Hat tip to anyone whose code was used
+* Inspiration
+* etc
