@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+# @Author   : Xiyao Ma
+
 import argparse
 import os
 import time
@@ -298,4 +301,8 @@ if __name__ == '__main__':
         print('after pruning: ', end=' ')
 
         inference(newmodel, data_loader_test, args,vis=True)
+<<<<<<< HEAD
         # measure_inference_time(newmodel, data_loader_test, num_warmup_runs=20, num_runs=5)
+=======
+        # measure_inference_time(newmodel, data_loader_test, num_warmup_runs=20, num_runs=5)
+>>>>>>> c287f7f1f7b3da04f000b28a70c84f69ae261f58
