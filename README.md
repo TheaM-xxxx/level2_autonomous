@@ -70,7 +70,7 @@ Follow the steps below to operate the interface:
 
 ### 3. Test of the Fast-UCTransNet
 
-For the testing of the proposed Fast-UCTransNet, we provided 5 images for animal vessels and instruments, separately. The script is slightly different when facing different datasets:
+For the proposed Fast-UCTransNet, we provided a few example images of animal vessels and instruments for testing. The script is slightly different when facing different datasets:
 
 Animal vessel:
 ```Shell
