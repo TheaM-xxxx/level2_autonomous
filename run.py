@@ -8,7 +8,7 @@ import threading
 from threading import Lock
 import time
 
-import QT_UI
+import CS3P_and_DPAC_codes.QT_UI as QT_UI
 import pyautogui
 
 from PyQt5.QtChart import QDateTimeAxis,QValueAxis,QSplineSeries,QChart,QChartView
@@ -43,8 +43,8 @@ import datetime
 
 from memory_profiler import profile
 
-import AstarSearch as a
-import AStar_2D as a_2d
+import CS3P_and_DPAC_codes.AstarSearch as a
+import CS3P_and_DPAC_codes.AStar_2D as a_2d
 # import AstarSearch_mp as a
 
 import skeletor as sk
@@ -54,12 +54,12 @@ from multiprocessing import Process, Manager
 
 from stl import mesh
 
-import WM_COPYDATA
+import CS3P_and_DPAC_codes.WM_COPYDATA as WM_COPYDATA
 
 import inspect
 import ctypes
 
-import socket2robot
+import CS3P_and_DPAC_codes.socket2robot as socket2robot
 
 from vtk.util import numpy_support
 
@@ -83,7 +83,7 @@ import openpyxl
 import keyboard
 import re
 
-import torque_period
+import CS3P_and_DPAC_codes.torque_period as torque_period
 
 from scipy.interpolate import interp1d
 from scipy.spatial.distance import euclidean
@@ -94,14 +94,14 @@ from scipy.spatial.distance import cdist
 # model_path = "vein_rot.STL"
 
 # 动物
-model_path = "Model-data/238_smooth.stl"
+model_path = "CS3P_and_DPAC_codes/Model-data/238_smooth.stl"
 
 
 # centerline file
-centerline_path = "Point-data/left_center.npy"
+centerline_path = "CS3P_and_DPAC_codes/Point-data/left_center.npy"
 
 # Point file
-point_file = "Point-data/left.npy"
+point_file = "CS3P_and_DPAC_codes/Point-data/left.npy"
 
 # device
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -1178,7 +1178,7 @@ class MainWin(QtWidgets.QMainWindow):
 
     def branch_cal(self, linecolor="white", linewidth=3):  # Find the centerline branching point and index
         # mesh = trimesh.Trimesh(vertices=self.points, faces=self.edge, process=False)
-        mesh = trimesh.load_mesh("Model-data/238.stl", encoding="GB2312")
+        mesh = trimesh.load_mesh("CS3P_and_DPAC_codes/Model-data/238.stl", encoding="GB2312")
         # trimesh.Scene(mesh).show()
         # fixed = sk.pre.fix_mesh(mesh, remove_disconnected=5, inplace=False)
         # skel = sk.skeletonize.by_wavefront(fixed, waves=1, step_size=1)
@@ -1538,7 +1538,7 @@ class MainWin(QtWidgets.QMainWindow):
 
 
 
-        self.mark_display('Model-data/238_cut2.stl', color_input='yellow', opacity=0.5)
+        self.mark_display('CS3P_and_DPAC_codes/Model-data/238_cut2.stl', color_input='yellow', opacity=0.5)
 
         self.new_iren.Start()
 
@@ -2620,7 +2620,7 @@ class AttentionLSTMModel(nn.Module):
 
 def NN_init(input_size=3,hidden_size=64,output_size=3):
     model = AttentionLSTMModel(input_size, hidden_size, output_size).to(device)
-    model.load_state_dict(torch.load('AttentionLSTM_model_save.ckpt'))
+    model.load_state_dict(torch.load('./CS3P_and_DPAC_codes/AttentionLSTM_model_save.ckpt'))
 
     return model
 

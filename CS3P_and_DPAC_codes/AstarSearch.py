@@ -1,16 +1,9 @@
 # -*- coding: utf-8 -*-
 # @Author   : Linsen Zhang
 import heapq
-import copy
-from multiprocessing import Process
 
-import numpy as np
-import datetime
-
-import main
-from main import *
+from run import *
 import vtk
-from vtkmodules.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
 import vtkmodules.vtkFiltersModeling
 import math
 

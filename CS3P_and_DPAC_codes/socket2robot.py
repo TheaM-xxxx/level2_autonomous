@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 # @Author   : Linsen Zhang
 import time
-import paras
+import CS3P_and_DPAC_codes.paras
 import socket
 import threading
-
+import CS3P_and_DPAC_codes.paras as paras
 
 
 u32_FrameId_Tx = 0  # of frames sent
