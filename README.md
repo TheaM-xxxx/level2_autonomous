@@ -33,22 +33,22 @@ while the Fast-UCTransNet is tested independently, considering it requires real 
 │    │   ├── Model-data                    # folder in which 3D vascular map is placed              
 │    │   ├── Point-data                    # folder in which a set of predicted instrument tip position is placed
 │    │   ├── Robot-data                    # folder in which a set of robotic operational data is placed     
-│    │   └── AStar_2D.py
-│    │   └── AstarSearch.py
-│    │   └── paras.py
-│    │   └── QT_UI.py
-│    │   └── socket2robot.py
-│    │   └── torque_period.py
-│    │   └── WM_COPYDATA.py
+│    │   └── AStar_2D.py                   # code for 2d planning
+│    │   └── AstarSearch.py                # code for 3d planning
+│    │   └── paras.py                      # communication protocol parameters with the vascular robot 
+│    │   └── QT_UI.py                      # code for building QT interface
+│    │   └── socket2robot.py               # code for communicating with the robot
+│    │   └── torque_period.py              # code for calculating torque
+│    │   └── WM_COPYDATA.py                # code for communicating with electromagnetic tracking system
 │    ├── main.py                           # The code for opening auto-control interface
 │    ├── Fast_UCTransNet_codes             
-│    │   ├── network.py       # The main part of the Fast_TransNet
+│    │   ├── network.py       # main part of the Fast_TransNet
 │    │   ├── dataset          # folder in which example testing images are placed
 │    │   ├── checkpoints      # folder in which model parameters trained by us are placed      
 │    │   └── UCTransNet       # folder in which orginal UCTransNet codes are placed      
 │    │   └── metrics.py       # codes for metrics calculation
 │    │   └── datasets.py      # codes for dataset establishment
-│    ├── inference-light.py   # The code for testing the Fast_TransNet
+│    ├── inference-light.py   # code for testing the Fast_TransNet
 ```
 
 ### 2. Test of the CS3P algorithm and DPAC strategy
