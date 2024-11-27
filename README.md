@@ -60,7 +60,7 @@ python main.py
 ```
 The auto-control interface mainly comprises four sub-windows (indicated by yellow dashed lines), including the camera view (1), the intracavity view (2), the 3D view (3), and the delivery force curve (4), respectively. The top right corner outlined in pink displays the current status of the instrument, which is predicted by the proposed MSF-RNN. The status is shown in three different colors, including normal delivery (green), entering the branch (yellow), and obstruction (red).
 
-![image](https://github.com/TheaM-xxxx/level2_autonomous/blob/develop/interface.jpg)
+![image](https://github.com/TheaM-xxxx/level2_autonomous/blob/master/interface.jpg)
 
 Follow the steps below to operate the interface:
 1. Click the button ①, named 'Map_load', and the system will load the provided example data.
