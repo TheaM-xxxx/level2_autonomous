@@ -2,7 +2,7 @@
 
 This repository is the official implementation of the methods proposed in the paper: A Level 2 Autonomous Surgical Robotic System for Coronary Interventional Surgery.
 
-![image](https://github.com/TheaM-xxxx/level2_autonomous/blob/master/1.jpg)
+![image](https://github.com/TheaM-xxxx/level2_autonomous/blob/master/overview.jpg)
 
 We proposed a Level 2 autonomous surgical robotic system that can conduct most of the routine tasks in a standardized coronary intervention.
 
@@ -40,7 +40,6 @@ while the Fast-UCTransNet is tested independently, considering it requires real 
 │    │   └── socket2robot.py               # code for communicating with the robot
 │    │   └── torque_period.py              # code for calculating torque
 │    │   └── WM_COPYDATA.py                # code for communicating with electromagnetic tracking system
-│    ├── run.py                           # The code for opening auto-control interface
 │    ├── Fast_UCTransNet_codes             
 │    │   ├── network.py       # main part of the Fast_TransNet
 │    │   ├── dataset          # folder in which example testing images are placed
@@ -48,7 +47,8 @@ while the Fast-UCTransNet is tested independently, considering it requires real 
 │    │   └── UCTransNet       # folder in which orginal UCTransNet codes are placed      
 │    │   └── metrics.py       # codes for metrics calculation
 │    │   └── datasets.py      # codes for dataset establishment
-│    ├── inference-light.py   # code for testing the Fast_TransNet
+│    ├── CS3P_and DPAC_run.py     # code for opening auto-control interface
+│    ├── Fast_UCTransNet_run.py   # code for testing the Fast_TransNet
 ```
 
 ### 2. Test of the CS3P algorithm and DPAC strategy
@@ -56,7 +56,7 @@ The vascular map in the demo is the 3D vascular model of one pig used in the in 
 
 For the testing of the designed CS3P algorithm and DPAC strategy, run the script:
 ```Shell
-python run.py 
+python CS3P_and DPAC_run.py 
 ```
 The auto-control interface mainly comprises four sub-windows (indicated by yellow dashed lines), including the camera view (1), the intracavity view (2), the 3D view (3), and the delivery force curve (4), respectively. The top right corner outlined in pink displays the current status of the instrument, which is predicted by the proposed MSF-RNN. The status is shown in three different colors, including normal delivery (green), entering the branch (yellow), and obstruction (red).
 
@@ -74,11 +74,11 @@ For the proposed Fast-UCTransNet, we provided a few example images of animal ves
 
 Animal vessel:
 ```Shell
-python inference-light.py --dataset animal --classes 3
+python Fast_UCTransNet_run.py --dataset animal --classes 3
 ```
 Instrument:
 ```Shell
-python inference-light.py --dataset guidewire --classes 2
+python Fast_UCTransNet_run.py --dataset guidewire --classes 2
 ```
 For the animal vessels, the left anterior descending artery (LAD) and the left circumflex artery (LCx) will be segmented and displayed in different colors. For the instruments, two guidewires will be segmented as we deployed two ones into different coronary branches of the animal in the experiment.
 
