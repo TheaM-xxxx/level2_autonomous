@@ -8,7 +8,7 @@ We proposed a Level 2 autonomous surgical robotic system that can conduct most o
 
 ## Getting Started
 
-First clone the repo and cd into the directory
+First clone the repo and cd into the directory.
 ```shell
 git clone https://github.com/TheaM-xxxx/level2_autonomous.git
 cd level2_autonomous
@@ -30,20 +30,29 @@ while the Fast-UCTransNet is tested independently, considering it requires real 
 ├── level2_autonomous                      
 │    ├── CS3P_and_DPAC_codes               # folder in which new surgical video is placed
 │    │   ├── AttentionLSTM_model_save.ckpt # Model parameters trained by us
-│    │   ├── Model-data                    # folder in which 3D vascular model of one pig used in the in vivo experiment is placed              
+│    │   ├── Model-data                    # folder in which 3D vascular map is placed              
 │    │   ├── Point-data                    # folder in which a set of predicted instrument tip position is placed
-│    │   ├── Robot-data                    # folder in which a set of data obtained from the robot is placed     
-│    │   └── ...
+│    │   ├── Robot-data                    # folder in which a set of robotic operational data is placed     
+│    │   └── AStar_2D.py                   # code for 2d planning
+│    │   └── AstarSearch.py                # code for 3d planning
+│    │   └── paras.py                      # communication protocol parameters with the vascular robot 
+│    │   └── QT_UI.py                      # code for building QT interface
+│    │   └── socket2robot.py               # code for communicating with the robot
+│    │   └── torque_period.py              # code for calculating torque
+│    │   └── WM_COPYDATA.py                # code for communicating with electromagnetic tracking system
 │    ├── main.py                           # The code for opening auto-control interface
 │    ├── Fast_UCTransNet_codes             
-│    │   ├── network.py       # The main part of the Fast_TransNet
+│    │   ├── network.py       # main part of the Fast_TransNet
 │    │   ├── dataset          # folder in which example testing images are placed
 │    │   ├── checkpoints      # folder in which model parameters trained by us are placed      
-│    │   └── ...   
-│    ├── inference-light.py   # The code for testing the Fast_TransNet
+│    │   └── UCTransNet       # folder in which orginal UCTransNet codes are placed      
+│    │   └── metrics.py       # codes for metrics calculation
+│    │   └── datasets.py      # codes for dataset establishment
+│    ├── inference-light.py   # code for testing the Fast_TransNet
 ```
 
 ### 2. Test of the CS3P algorithm and DPAC strategy
+The vascular map in the demo is the 3D vascular model of one pig used in the in vivo experiment (in Model-data folder). Since the system should be used in conjunction with a vascular robot, we provide a set of robotic operational data from experiments as inputs (in Robot-data folder), along with a set of calculated trajectory points (in Point-data folder) for the visualization.
 
 For the testing of the designed CS3P algorithm and DPAC strategy, run the script:
 ```Shell
@@ -61,16 +70,17 @@ Follow the steps below to operate the interface:
 
 ### 3. Test of the Fast-UCTransNet
 
-For the testing of the proposed Fast-UCTransNet, we provided 5 images for animal vessels and guidewires, separately. The script is slightly different when facing different datasets:
+For the testing of the proposed Fast-UCTransNet, we provided 5 images for animal vessels and instruments, separately. The script is slightly different when facing different datasets:
 
 Animal vessel:
 ```Shell
 python inference-light.py --dataset animal --classes 3
 ```
-Guidewire:
+Instrument:
 ```Shell
 python inference-light.py --dataset guidewire --classes 2
 ```
+For the animal vessels, the left anterior descending artery (LAD) and the left circumflex artery (LCx) will be segmented and displayed in different colors. For the instruments, two guidewires will be segmented as we deployed two ones into different coronary branches of the animal in the experiment.
 
 ## Acknowledgements
 The codes of Fast-UCTransNet is built upon the original [UCTransNet](https://github.com/McGregorWwww/UCTransNet).
