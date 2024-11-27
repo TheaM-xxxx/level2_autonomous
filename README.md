@@ -10,7 +10,7 @@ We proposed a Level 2 autonomous surgical robotic system that can conduct most o
 
 First clone the repo and cd into the directory.
 ```shell
-git clone https://github.com/TheaM-xxxx/level2_autonomous.git
+git clone https://github.com/TheaMXY/level2_autonomous.git
 cd level2_autonomous
 ```
 Then create a virtual environment and install the dependencies before running the codes.
@@ -40,7 +40,7 @@ while the Fast-UCTransNet is tested independently, considering it requires real 
 │    │   └── socket2robot.py               # code for communicating with the robot
 │    │   └── torque_period.py              # code for calculating torque
 │    │   └── WM_COPYDATA.py                # code for communicating with electromagnetic tracking system
-│    ├── main.py                           # The code for opening auto-control interface
+│    ├── run.py                           # The code for opening auto-control interface
 │    ├── Fast_UCTransNet_codes             
 │    │   ├── network.py       # main part of the Fast_TransNet
 │    │   ├── dataset          # folder in which example testing images are placed
@@ -56,7 +56,7 @@ The vascular map in the demo is the 3D vascular model of one pig used in the in 
 
 For the testing of the designed CS3P algorithm and DPAC strategy, run the script:
 ```Shell
-python main.py 
+python run.py 
 ```
 The auto-control interface mainly comprises four sub-windows (indicated by yellow dashed lines), including the camera view (1), the intracavity view (2), the 3D view (3), and the delivery force curve (4), respectively. The top right corner outlined in pink displays the current status of the instrument, which is predicted by the proposed MSF-RNN. The status is shown in three different colors, including normal delivery (green), entering the branch (yellow), and obstruction (red).
 
