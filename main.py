@@ -2823,38 +2823,40 @@ class vtkTimerCallback():
         torque_data.write(main.NN_input)  # Access to torque_data
         main.force_state = NN_predict(torque_data.read(), model)  # Input time window data into the model
 
+
         if main.force_state == 2:
+            if not ui.pushButton_5.isEnabled():
+                main.force_2D_actor.SetInput("lesion crossing")
+                main.force_2D_actor.SetDisplayPosition(512, 512)  # Position
+                main.force_2D_actor.GetTextProperty().SetColor(1, 0, 0)  # Color
+                main.ren.AddActor(main.force_2D_actor)
+                main.torque_delay = 3
+                print("dis:",dis)
+                main.rot_dir = main.rot_dir + 1
+                if main.rot_dir % 10 < 5:
+                    socket2robot.sendTargetModeOfOperation_WithFrameIdAndTime(0x02, 'PVM')
+                    socket2robot.sendTargetVelocity_WithFrameIdAndTime(0x02, 200)
 
-            main.force_2D_actor.SetInput("lesion crossing")
-            main.force_2D_actor.SetDisplayPosition(512, 512)  # Position
-            main.force_2D_actor.GetTextProperty().SetColor(1, 0, 0)  # Color
-            main.ren.AddActor(main.force_2D_actor)
-            main.torque_delay = 3
-            print("dis:",dis)
-            main.rot_dir = main.rot_dir + 1
-            if main.rot_dir % 10 < 5:
-                socket2robot.sendTargetModeOfOperation_WithFrameIdAndTime(0x02, 'PVM')
-                socket2robot.sendTargetVelocity_WithFrameIdAndTime(0x02, 200)
-
-            else:
-                socket2robot.sendTargetModeOfOperation_WithFrameIdAndTime(0x02, 'PVM')
-                socket2robot.sendTargetVelocity_WithFrameIdAndTime(0x02, -200)
+                else:
+                    socket2robot.sendTargetModeOfOperation_WithFrameIdAndTime(0x02, 'PVM')
+                    socket2robot.sendTargetVelocity_WithFrameIdAndTime(0x02, -200)
 
 
         elif main.force_state == 1:
+            if not ui.pushButton_5.isEnabled():
+                main.force_2D_actor.SetInput("branch entering")
+                main.force_2D_actor.GetTextProperty().SetColor(1, 1, 0)  # Color
+                main.ren.AddActor(main.force_2D_actor)
+                main.torque_delay = 1
+                main.rot_dir = main.rot_dir + 1
+                if main.rot_dir < 10 and main.rot_dir >= 0:
+                    socket2robot.sendTargetModeOfOperation_WithFrameIdAndTime(0x02, 'PVM')
+                    socket2robot.sendTargetVelocity_WithFrameIdAndTime(0x02, -200)
+                else:
+                    socket2robot.sendTargetModeOfOperation_WithFrameIdAndTime(0x02, 'PVM')
+                    socket2robot.sendTargetVelocity_WithFrameIdAndTime(0x02, 200)
+                # print("进分支开始旋转")
 
-            main.force_2D_actor.SetInput("branch entering")
-            main.force_2D_actor.GetTextProperty().SetColor(1, 1, 0)  # Color
-            main.ren.AddActor(main.force_2D_actor)
-            main.torque_delay = 1
-            main.rot_dir = main.rot_dir + 1
-            if main.rot_dir < 10 and main.rot_dir >= 0:
-                socket2robot.sendTargetModeOfOperation_WithFrameIdAndTime(0x02, 'PVM')
-                socket2robot.sendTargetVelocity_WithFrameIdAndTime(0x02, -200)
-            else:
-                socket2robot.sendTargetModeOfOperation_WithFrameIdAndTime(0x02, 'PVM')
-                socket2robot.sendTargetVelocity_WithFrameIdAndTime(0x02, 200)
-            # print("进分支开始旋转")
 
 
         else:
@@ -3981,7 +3983,7 @@ if __name__ == '__main__':
     main.setWindowIcon(QIcon("Vascure.ico"))
 
 
-    main.setWindowTitle("Interventional Surgery Robotic 3D Assisted Navigation")
+    main.setWindowTitle("A Level 2 Autonomous Surgical Robotic System for Coronary Interventional Surgery")
 
 
     main.resize(1350, 540)
